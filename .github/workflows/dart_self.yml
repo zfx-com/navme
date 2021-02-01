@@ -19,8 +19,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Change version
-        run: sh _bump.sh $GITHUB_REF $GITHUB_RUN_NUMBER
+      # - name: Change version
+      #   run: sh _bump.sh $GITHUB_REF $GITHUB_RUN_NUMBER
 
       - name: Build web release
         run: cd example && flutter build web --release
