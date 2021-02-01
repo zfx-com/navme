@@ -84,7 +84,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
     // update state
     currentState = configuration;
-    updatePage(currentState, notif: false);
+    replace(currentState.uri);
   }
 
   /// return List [Page] for render stack pages in Navigator 2.0

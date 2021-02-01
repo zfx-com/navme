@@ -1,3 +1,7 @@
+## [0.9.3] - 01.02.2021
+
+- fix: setNewRoutePath
+
 ## [0.9.2] - 01.02.2021
 
 - doc: add live demo
