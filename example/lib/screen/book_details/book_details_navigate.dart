@@ -24,7 +24,9 @@ class BookDetailsNavigate {
       return null;
     }
     // book/1
-    var id = state.uri?.pathSegments?.length == 2 ? state.uri?.pathSegments[1] : null;
+    var id = state.uri?.pathSegments?.length == 2
+        ? state.uri?.pathSegments[1]
+        : null;
     // book?id=1
     id ??= state.getQueryValue('id');
     if (id == null) {
@@ -38,7 +40,9 @@ class BookDetailsNavigate {
     final id = int.tryParse(settings['id']?.toString());
     Book book;
     if (id != null) {
-      book = BooksListScreen.allBooks.length > id ? BooksListScreen.allBooks[id] : null;
+      book = BooksListScreen.allBooks.length > id
+          ? BooksListScreen.allBooks[id]
+          : null;
     }
     return MaterialPage(
       key: ValueKey('BookDetailsPageId$id'),

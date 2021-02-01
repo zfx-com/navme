@@ -9,7 +9,8 @@ class FadePage extends Page {
   Route createRoute(BuildContext context) {
     return PageRouteBuilder(
       settings: this,
-      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
         return FadeTransition(
           opacity: animation,
           child: child,

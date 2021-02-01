@@ -7,7 +7,8 @@ class NestedScreen extends StatelessWidget {
   NestedScreen({Key key}) : super(key: key);
 
   final NavmeRouterDelegate _routerDelegate = NavmeRouterDelegate();
-  final StateRouteInformationParser _stateRouteInformation = StateRouteInformationParser();
+  final StateRouteInformationParser _stateRouteInformation =
+      StateRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {

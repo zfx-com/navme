@@ -1,7 +1,7 @@
 {
   "dart.previewFlutterUiGuides": true,
   "dart.previewFlutterUiGuidesCustomTracking": true,
-  "dart.lineLength": 150,
+  "dart.lineLength": 80,
   "dart.analysisExcludedFolders": [
     "lib/generated",
     "lib/l10n",

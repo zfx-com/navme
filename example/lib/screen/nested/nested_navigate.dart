@@ -7,7 +7,9 @@ class NestedNavigate {
   static RouteConfig routeConfig = RouteConfig(
     state: RouteState(uri: path.toUri()),
     isThisPage: (RouteState state) {
-      if ((state?.firstPath == path || state?.uri?.pathSegments?.isEmpty == true) && !state.hasParams) {
+      if ((state?.firstPath == path ||
+              state?.uri?.pathSegments?.isEmpty == true) &&
+          !state.hasParams) {
         return true;
       }
       return false;
@@ -16,7 +18,10 @@ class NestedNavigate {
       return null;
     },
     page: ({RouteState state}) {
-      return MaterialPage(key: const ValueKey('NestedPage'), child: NestedScreen(), name: 'NestedScreen');
+      return MaterialPage(
+          key: const ValueKey('NestedPage'),
+          child: NestedScreen(),
+          name: 'NestedScreen');
     },
   );
 }

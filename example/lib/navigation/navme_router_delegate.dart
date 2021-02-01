@@ -32,8 +32,12 @@ class NavmeRouterDelegate extends BaseRouterDelegate {
       return delegate;
     }
     assert(() {
-      throw FlutterError('Router operation requested with a context that does not include a NavmeRouterDelegate.\n');
-    }(), 'Router operation requested with a context that does not include a NavmeRouterDelegate.\n');
+      throw FlutterError(
+          // ignore: lines_longer_than_80_chars
+          'Router operation requested with a context that does not include a NavmeRouterDelegate.\n');
+    }(),
+        // ignore: lines_longer_than_80_chars
+        'Router operation requested with a context that does not include a NavmeRouterDelegate.\n');
     return null;
   }
 

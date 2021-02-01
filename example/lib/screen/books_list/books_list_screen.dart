@@ -39,17 +39,20 @@ class BooksListScreen extends StatelessWidget {
                     title: Text(book.title),
                     subtitle: Text(book.author),
                     onTap: () {
-                      NavmeRouterDelegate.of(context)?.push(BookDetailsNavigate.getUri(book));
+                      NavmeRouterDelegate.of(context)
+                          ?.push(BookDetailsNavigate.getUri(book));
                     }),
               ListTile(
                   title: const Text('Fade'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)?.push(FadeNavigate.path.toUri());
+                    NavmeRouterDelegate.of(context)
+                        ?.push(FadeNavigate.path.toUri());
                   }),
               ListTile(
                   title: const Text('Nested'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)?.push(NestedNavigate.path.toUri());
+                    NavmeRouterDelegate.of(context)
+                        ?.push(NestedNavigate.path.toUri());
                   }),
             ],
           ),

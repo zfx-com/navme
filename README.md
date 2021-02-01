@@ -2,11 +2,13 @@
 
 [![Pub](https://img.shields.io/pub/v/navme.svg)](https://pub.dev/packages/navme)
 
+A simple way to use Navigation 2.0 like Navigator 1.0 and simple config for each page
+Navigation with focus on support web URL.
 
 ## Import
 
 ```yaml
-navme: 0.9.0
+navme: 0.9.1
 ```
 
 ```dart
@@ -14,6 +16,8 @@ import 'package:navme/navme.dart';
 ```
 
 ## Example use
+
+Example config for page:
 
 ```dart
  // config page
@@ -42,6 +46,8 @@ import 'package:navme/navme.dart';
   );
 }
 ```
+
+Implementation BaseRouterDelegate for your configuration
 
 ```dart
 class NavmeRouterDelegate extends BaseRouterDelegate {
@@ -92,6 +98,29 @@ class NavmeRouterDelegate extends BaseRouterDelegate {
     );
   }
 }
+```
+
+use Router:
+
+```dart
+ final NavmeRouterDelegate _routerDelegate = NavmeRouterDelegate();
+  final StateRouteInformationParser _stateRouteInformation =
+      StateRouteInformationParser();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _stateRouteInformation,
+    );
+  }
+```
+
+Navigate to the new detail book page
+
+```dart
+  NavmeRouterDelegate.of(context)
+                          ?.push(BookDetailsNavigate.getUri(book));
 ```
 
 ### Todo:

@@ -11,7 +11,8 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final NavmeRouterDelegate _routerDelegate = NavmeRouterDelegate();
-  final StateRouteInformationParser _stateRouteInformation = StateRouteInformationParser();
+  final StateRouteInformationParser _stateRouteInformation =
+      StateRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {

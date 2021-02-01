@@ -12,7 +12,9 @@ class BooksListNavigate {
     state: RouteState(uri: path.toUri()),
     // condition for using this page
     isThisPage: (RouteState state) {
-      if ((state?.firstPath == path || state?.uri?.pathSegments?.isEmpty == true) && !state.hasParams) {
+      if ((state?.firstPath == path ||
+              state?.uri?.pathSegments?.isEmpty == true) &&
+          !state.hasParams) {
         return true;
       }
       return false;
@@ -23,7 +25,10 @@ class BooksListNavigate {
     },
     // get Page for Router
     page: ({RouteState state}) {
-      return MaterialPage(key: const ValueKey('BooksListPage'), child: BooksListScreen.all(), name: 'BooksListScreen');
+      return MaterialPage(
+          key: const ValueKey('BooksListPage'),
+          child: BooksListScreen.all(),
+          name: 'BooksListScreen');
     },
   );
 }

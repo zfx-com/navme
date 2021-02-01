@@ -3,23 +3,46 @@ import 'package:flutter/widgets.dart';
 
 import 'index.dart';
 
-abstract class BaseRouterDelegate extends RouterDelegate<RouteState> with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteState> {
+/// A delegate that is used by the [Router] widget to build and configure a
+/// navigating widget.
+///
+/// This delegate is the core piece of the [Router] widget. It responds to
+/// push route and pop route intents from the engine and notifies the [Router]
+/// to rebuild. It also acts as a builder for the [Router] widget and builds a
+/// navigating widget, typically a [Navigator], when the [Router] widget
+/// builds.
+///
+/// When the engine pushes a new route, the route information is parsed by the
+/// [RouteInformationParser] to produce a configuration of type [RouteState].
+abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteState> {
+  /// initConfig - required initial [RouteConfig] for create Router initial page
+  /// configs - List of [RouteConfig] all pages in your Navigator
   BaseRouterDelegate({@required this.initConfig, @required this.configs})
       : navigatorKey = GlobalKey<NavigatorState>(),
         currentState = initConfig.state;
 
+  /// List of [RouteConfig] all pages in your Navigator
   final List<RouteConfig> configs;
   @override
   final GlobalKey<NavigatorState> navigatorKey;
+
+  /// required initial [RouteConfig] for create Router initial page
   final RouteConfig initConfig;
 
+  /// history states
   List<RouteState> previousState = [];
-  bool init = false;
 
+  /// current [RouteState] of [Router]
   RouteState currentState;
+
+  /// Stack pages in this moment
   List<Page<dynamic>> pages;
 
-  /// use careful
+  bool _init = false;
+
+  /// use careful, update variable when will get
+  /// Update pages and state in back
   RouteState get backState {
     var value = initConfig.state;
     if (pages.isNotEmpty) {
@@ -32,6 +55,8 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState> with Change
     return value;
   }
 
+  /// add new page in stack by new [RouteState]
+  /// notif - use notifyListeners
   void updatePage(RouteState newState, {bool notif = true}) {
     for (final item in configs) {
       final isThisPage = item.isThisPage(newState);
@@ -49,20 +74,21 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState> with Change
   }
 
   @override
-  // ignore: avoid_renaming_method_parameters
-  Future<void> setNewRoutePath(RouteState newState) async {
-    assert(newState != null, 'newState must be not null');
+  Future<void> setNewRoutePath(RouteState configuration) async {
+    assert(configuration != null, 'configuration must be not null');
     // fix dublicate start page
-    if (init == false && initConfig.isThisPage(newState)) {
-      init = true;
+    if (_init == false && initConfig.isThisPage(configuration)) {
+      _init = true;
       return;
     }
 
     // update state
-    currentState = newState;
+    currentState = configuration;
     updatePage(currentState, notif: false);
   }
 
+  /// return List [Page] for render stack pages in Navigator 2.0
+  /// always return a new instance of List to build new render
   List<Page<dynamic>> buildPage() {
     if (pages == null || pages.isEmpty) {
       pages = [];
@@ -84,17 +110,20 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState> with Change
     return [...pages];
   }
 
+  /// Add new page in stack pages
   void push(Uri uri) {
     previousState.add(currentState);
     currentState = RouteState(uri: uri);
     updatePage(currentState);
   }
 
+  /// remove last page in stack pages
   void pop() {
     currentState = backState;
     notifyListeners();
   }
 
+  /// remove all current stack pages and add one new page in stack
   void replace(Uri uri) {
     pages.clear();
     previousState.clear();
@@ -102,6 +131,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState> with Change
     updatePage(currentState);
   }
 
+  /// use notifyListeners
   void refresh() {
     notifyListeners();
   }
