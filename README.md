@@ -5,7 +5,7 @@
 A simple way to use Navigation 2.0 like Navigator 1.0 and simple config for each page
 Navigation with focus on support web URL.
 
-live demo: https://zfx-com.github.io/navme/#book?id=1
+live demo: https://zfx-com.github.io/navme/
 
 ## Import
 
