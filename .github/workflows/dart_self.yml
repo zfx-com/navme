@@ -1,0 +1,43 @@
+name: Dart CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build_web:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Running flutter doctor
+        run: flutter doctor
+      - name: Enable web
+        run: flutter config --enable-web
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Change version
+        run: sh _bump.sh $GITHUB_REF $GITHUB_RUN_NUMBER
+
+      - name: Build web release
+        run: cd example && flutter build web --release
+
+      - name: Use random for fix cache
+        run: |
+          ran=$RANDOM
+          echo $ran
+          mv -i example/build/web/main.dart.js example/build/web/main.$ran.dart.js
+          mv -i example/build/web/main.dart.js example/build/web/main.$ran.dart.js
+          sed -i '' 's|main\.dart\.js\?v\=[0-9]*|main\.'$ran'\.dart\.js|g' ./example/build/web/index.html ./example/build/web/flutter_service_worker.js
+          sed -i '' 's|main\.dart\.js|main\.'$ran'\.dart\.js|g' ./example/build/web/index.html ./example/build/web/flutter_service_worker.js
+
+      - name: GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v1.4.1
+        with:
+          build_dir: example/build/web
+          fqdn: doppio.dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.ci_token }}
