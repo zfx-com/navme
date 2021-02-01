@@ -38,6 +38,5 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v1.4.1
         with:
           build_dir: example/build/web
-          fqdn: doppio.dev
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
