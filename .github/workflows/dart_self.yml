@@ -33,7 +33,7 @@ jobs:
           mv -i example/build/web/main.dart.js example/build/web/main.$ran.dart.js
           sed -i '' 's|main\.dart\.js\?v\=[0-9]*|main\.'$ran'\.dart\.js|g' ./example/build/web/index.html ./example/build/web/flutter_service_worker.js
           sed -i '' 's|main\.dart\.js|main\.'$ran'\.dart\.js|g' ./example/build/web/index.html ./example/build/web/flutter_service_worker.js
-          sed -i '' 's|base href="/"|base href="/navme"|g' ./example/build/web/index.html
+          sed -i '' 's|base href="/"|base href="/navme/"|g' ./example/build/web/index.html
 
       - name: GitHub Pages
         uses: crazy-max/ghaction-github-pages@v1.4.1
