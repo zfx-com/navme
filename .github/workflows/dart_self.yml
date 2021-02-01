@@ -40,4 +40,4 @@ jobs:
           build_dir: example/build/web
           fqdn: doppio.dev
         env:
-          GITHUB_TOKEN: ${{ secrets.ci_token }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
