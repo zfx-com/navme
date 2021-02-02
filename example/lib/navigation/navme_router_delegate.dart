@@ -10,37 +10,48 @@ import '../screen/nested/index.dart';
 import '../screen/unknown_screen.dart';
 
 class NavmeRouterDelegate extends BaseRouterDelegate {
-  NavmeRouterDelegate()
+  NavmeRouterDelegate(
+      {@required RouteConfig initialRoute,
+      @required List<RouteConfig> routes,
+      @required RouteConfig onUnknownRoute,
+      String nestedPrefixPath,
+      String debugLabel})
       : super(
-          initialRoute: HomeNavigate.routeConfig,
-          routes: [
-            HomeNavigate.routeConfig,
-            BookDetailsNavigate.routeConfig,
-            BooksListNavigate.routeConfig,
-            FadeNavigate.routeConfig,
-            NestedNavigate.routeConfig,
-          ],
-          onUnknownRoute: UnknownNavigate.routeConfig,
+          initialRoute: initialRoute,
+          routes: routes,
+          onUnknownRoute: onUnknownRoute,
+          nestedPrefixPath: nestedPrefixPath,
+          debugLabel: debugLabel,
         );
 
-  @override
-  RouteState get currentConfiguration {
-    return currentState;
+  factory NavmeRouterDelegate.main() {
+    return NavmeRouterDelegate(
+      initialRoute: HomeNavigate.routeConfig,
+      routes: [
+        HomeNavigate.routeConfig,
+        BookDetailsNavigate.routeConfig,
+        BooksListNavigate.routeConfig,
+        FadeNavigate.routeConfig,
+        NestedNavigate.routeConfig,
+      ],
+      onUnknownRoute: UnknownNavigate.routeConfig,
+      debugLabel: 'main',
+    );
   }
 
-  static NavmeRouterDelegate of(BuildContext context) {
-    final delegate = Router.of(context).routerDelegate;
-    if (delegate is NavmeRouterDelegate) {
-      return delegate;
-    }
-    assert(() {
-      throw FlutterError(
-          // ignore: lines_longer_than_80_chars
-          'Router operation requested with a context that does not include a NavmeRouterDelegate.\n');
-    }(),
-        // ignore: lines_longer_than_80_chars
-        'Router operation requested with a context that does not include a NavmeRouterDelegate.\n');
-    return null;
+  factory NavmeRouterDelegate.nested() {
+    return NavmeRouterDelegate(
+      initialRoute: HomeNavigate.nestedRouteConfig,
+      routes: [
+        HomeNavigate.nestedRouteConfig,
+        BookDetailsNavigate.routeConfig,
+        BooksListNavigate.routeConfig,
+        FadeNavigate.routeConfig,
+      ],
+      onUnknownRoute: UnknownNavigate.routeConfig,
+      nestedPrefixPath: NestedNavigate.path,
+      debugLabel: 'nested',
+    );
   }
 
   @override

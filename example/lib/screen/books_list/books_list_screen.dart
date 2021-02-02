@@ -1,3 +1,4 @@
+import 'package:navme/helpers.dart';
 import 'package:navme/navme.dart';
 import 'package:flutter/material.dart';
 
@@ -39,19 +40,19 @@ class BooksListScreen extends StatelessWidget {
                     title: Text(book.title),
                     subtitle: Text(book.author),
                     onTap: () {
-                      NavmeRouterDelegate.of(context)
+                      BaseRouterDelegate.of(context)
                           ?.push(BookDetailsNavigate.getUri(book));
                     }),
               ListTile(
                   title: const Text('Fade'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)
+                    BaseRouterDelegate.of(context)
                         ?.push(FadeNavigate.path.toUri());
                   }),
               ListTile(
                   title: const Text('Nested'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)
+                    BaseRouterDelegate.of(context)
                         ?.push(NestedNavigate.path.toUri());
                   }),
             ],

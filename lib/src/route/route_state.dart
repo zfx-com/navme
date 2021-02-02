@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../ext.dart';
+import '../helpers/index.dart';
 
 @immutable
 
@@ -52,4 +52,17 @@ class RouteState {
 
   @override
   int get hashCode => uri.hashCode;
+
+  RouteState diff(String nestedPrefixPath) {
+    if (nestedPrefixPath == null ||
+        nestedPrefixPath == '' ||
+        nestedPrefixPath == '/') {
+      return this;
+    }
+    final uriStr = this?.uri?.toString();
+    if (uriStr.startsWith(nestedPrefixPath)) {
+      return RouteState(uri: uriStr.substring(nestedPrefixPath.length).toUri());
+    }
+    return this;
+  }
 }

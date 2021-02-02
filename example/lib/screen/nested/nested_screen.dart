@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import '../../navigation/index.dart';
 
 class NestedScreen extends StatelessWidget {
-  NestedScreen({Key key}) : super(key: key);
+  NestedScreen({@required NavmeRouterDelegate routerDelegate, Key key})
+      : _routerDelegate = routerDelegate,
+        super(key: key);
 
-  final NavmeRouterDelegate _routerDelegate = NavmeRouterDelegate();
+  final NavmeRouterDelegate _routerDelegate;
   final StateRouteInformationParser _stateRouteInformation =
       StateRouteInformationParser();
 

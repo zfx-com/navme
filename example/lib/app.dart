@@ -10,7 +10,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final NavmeRouterDelegate _routerDelegate = NavmeRouterDelegate();
+  final NavmeRouterDelegate _routerDelegate = NavmeRouterDelegate.main();
   final StateRouteInformationParser _stateRouteInformation =
       StateRouteInformationParser();
 

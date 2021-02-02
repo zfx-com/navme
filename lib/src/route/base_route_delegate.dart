@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import '../helpers/index.dart';
 import 'index.dart';
 
 /// A delegate that is used by the [Router] widget to build and configure a
@@ -23,7 +24,10 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     @required this.initialRoute,
     @required this.routes,
     @required this.onUnknownRoute,
-  })  : navigatorKey = GlobalKey<NavigatorState>(),
+    this.nestedPrefixPath,
+    String debugLabel,
+  })  : _debugLabel = debugLabel,
+        navigatorKey = GlobalKey<NavigatorState>(),
         currentState = initialRoute.state(null);
 
   /// List of [RouteConfig] all pages in your Navigator
@@ -34,9 +38,21 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   /// required initial [RouteConfig] for create Router initial page
   final RouteConfig initialRoute;
 
-  /// required [RouteConfig] for create Router Unknown page
+  /// prefix path for Nested Navigator
+  final String nestedPrefixPath;
 
+  final String _debugLabel;
+
+  /// name for debug
+  String get debugLabel => _debugLabel ?? 'BaseRouterDelegate';
+
+  /// required [RouteConfig] for create Router Unknown page
   final RouteConfig onUnknownRoute;
+
+  @override
+  RouteState get currentConfiguration {
+    return currentState;
+  }
 
   /// history states
   List<RouteState> previousState = [];
@@ -52,6 +68,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   /// use careful, update variable when will get
   /// Update pages and state in back
   RouteState backState({bool removeLast = false}) {
+    l.log('backState: removeLast =  $removeLast', name: debugLabel);
     var value = initialRoute.state(null);
     if (pages.isNotEmpty) {
       if (pages.length > 1 || removeLast) {
@@ -67,18 +84,42 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     return value;
   }
 
+  /// get instance routerDelegate from context
+  static BaseRouterDelegate of(BuildContext context) {
+    final delegate = Router.of(context).routerDelegate;
+    if (delegate is BaseRouterDelegate) {
+      return delegate;
+    }
+    assert(() {
+      throw FlutterError(
+          // ignore: lines_longer_than_80_chars
+          'Router operation requested with a context that does not include a BaseRouterDelegate.\n');
+    }(),
+        // ignore: lines_longer_than_80_chars
+        'Router operation requested with a context that does not include a BaseRouterDelegate.\n');
+    return null;
+  }
+
   /// add new page in stack by new [RouteState]
   /// notif - use notifyListeners
   /// addOne - return when added one page from routes config
   /// fromLast - foreach config from last route
   void updatePage(RouteState newState,
       {bool notif = true, bool addOne = false, bool fromLast = false}) {
+    l.log(
+        // ignore: lines_longer_than_80_chars
+        'updatePage: newState= $newState, notif = $notif , addOne = $addOne , fromLast = $fromLast',
+        name: debugLabel);
+    l.log('pages $pages', name: debugLabel);
     var findedPage = false;
     final configs = [initialRoute, ...routes];
     final routesList = fromLast ? configs : configs.reversed.toList();
     for (final item in routesList) {
-      final isThisPage = item.isThisPage(newState);
+      final newStateWithoutPrefix = newState.diff(nestedPrefixPath);
+      l.log('newStateWithoutPrefix $newStateWithoutPrefix', name: debugLabel);
+      final isThisPage = item.isThisPage(newStateWithoutPrefix);
       if (isThisPage) {
+        l.log('add page ${item.state(newState?.uri)}', name: debugLabel);
         previousState.add(item.state(newState.uri));
         currentState = RouteState(uri: newState.uri);
         pages.add(item.page(state: newState));
@@ -104,6 +145,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
   @override
   Future<void> setNewRoutePath(RouteState configuration) async {
+    l.log('setNewRoutePath = $configuration', name: debugLabel);
     assert(configuration != null, 'configuration must be not null');
     // fix dublicate start page
     if (_init == false && initialRoute.isThisPage(configuration)) {
@@ -113,13 +155,16 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     pages?.clear();
     previousState.clear();
 
-    updatePage(configuration);
+    updatePage(configuration,
+        addOne: configuration.uri == initialRoute.state(null).uri);
   }
 
   /// return List [Page] for render stack pages in Navigator 2.0
   /// always return a new instance of List to build new render
   List<Page<dynamic>> buildPage() {
+    l.log('buildPage', name: debugLabel);
     if (pages == null || pages.isEmpty) {
+      l.log('buildPage: init', name: debugLabel);
       pages = [];
       pages.add(initialRoute.page(state: initialRoute.state(null)));
       return pages;
@@ -131,12 +176,20 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
       final distinct = keys.toSet();
       if (distinct.length != keys.length) {
         distinct.forEach(keys.remove);
+        l.log('pages = $pages', name: debugLabel);
         assert(false, 'dublicate keys page: ${keys.join(',')}');
       }
     }
 
+    l.log('return buildPage: pages = $pages', name: debugLabel);
     // always return new object
     return [...pages];
+  }
+
+  /// Add new page in stack pages with nestedprefix
+  void pushNested(Uri uri) {
+    updatePage(RouteState(uri: '${nestedPrefixPath ?? ''}/$uri'.toUri()),
+        addOne: true, fromLast: true);
   }
 
   /// Add new page in stack pages

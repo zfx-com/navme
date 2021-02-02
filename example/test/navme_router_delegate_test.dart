@@ -7,13 +7,14 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:navme/navme.dart';
+import 'package:navme/helpers.dart';
 
 // ignore: avoid_relative_lib_imports
 import '../lib/navigation/index.dart';
 
 void main() {
   test('book detail set', () async {
-    final navmeRouterDelegate = NavmeRouterDelegate();
+    final navmeRouterDelegate = NavmeRouterDelegate.main();
     var pages = navmeRouterDelegate.buildPage();
     expect(pages.length == 1, true);
     await navmeRouterDelegate
@@ -26,5 +27,20 @@ void main() {
     expect(navmeRouterDelegate.pages.isEmpty, true);
     pages = navmeRouterDelegate.buildPage();
     expect(navmeRouterDelegate.currentState.uri.toString() == '/', true);
+  });
+
+  test('nested', () async {
+    final navmeRouterDelegate = NavmeRouterDelegate.main();
+    final pages = navmeRouterDelegate.buildPage();
+    expect(pages.length == 1, true);
+    await navmeRouterDelegate
+        .setNewRoutePath(RouteState(uri: 'nested'.toUri()));
+    expect(navmeRouterDelegate.pages.length == 1, true,
+        reason: navmeRouterDelegate.pages.toString());
+    navmeRouterDelegate.pop();
+    expect(navmeRouterDelegate.pages.length == 1, true,
+        reason: navmeRouterDelegate.pages.toString());
+    expect(navmeRouterDelegate.currentState.uri.toString() == 'nested', true,
+        reason: navmeRouterDelegate.currentState.uri.toString());
   });
 }

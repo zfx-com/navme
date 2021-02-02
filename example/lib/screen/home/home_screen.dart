@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:navme/helpers.dart';
 import 'package:navme/navme.dart';
 
 import '../../navigation/index.dart';
@@ -24,19 +25,19 @@ class HomeScreen extends StatelessWidget {
               ListTile(
                   title: const Text('Books'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)
+                    BaseRouterDelegate.of(context)
                         ?.push(BooksListNavigate.path.toUri());
                   }),
               ListTile(
                   title: const Text('Fade'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)
+                    BaseRouterDelegate.of(context)
                         ?.push(FadeNavigate.path.toUri());
                   }),
               ListTile(
                   title: const Text('Nested'),
                   onTap: () {
-                    NavmeRouterDelegate.of(context)
+                    BaseRouterDelegate.of(context)
                         ?.push(NestedNavigate.path.toUri());
                   }),
             ],
