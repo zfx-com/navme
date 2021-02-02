@@ -26,7 +26,7 @@ class RouteState {
       uri.queryParameters != null && uri.queryParameters.isNotEmpty;
 
   @override
-  String toString() => uri?.toString();
+  String toString() => 'RouteState(uri: ${uri?.toString()})';
 
   @override
   bool operator ==(Object other) {

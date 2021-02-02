@@ -10,7 +10,7 @@ live demo: https://zfx-com.github.io/navme/
 ## Import
 
 ```yaml
-navme: 0.9.3
+navme: 0.9.4
 ```
 
 ```dart
@@ -22,17 +22,15 @@ import 'package:navme/navme.dart';
 Example config for page:
 
 ```dart
- // config page
- class BooksListNavigate {
   // base path
   static String path = 'book';
 
   // config for configurate Router
   static RouteConfig routeConfig = RouteConfig(
-    state: RouteState(uri: path.toUri()),
+    state: (Uri uri) => RouteState(uri: path.toUri()),
     // condition for using this page
     isThisPage: (RouteState state) {
-      if ((state?.firstPath == path || state?.uri?.pathSegments?.isEmpty == true) && !state.hasParams) {
+      if (state?.firstPath == path) {
         return true;
       }
       return false;
@@ -43,10 +41,12 @@ Example config for page:
     },
     // get Page for Router
     page: ({RouteState state}) {
-      return MaterialPage(key: const ValueKey('BooksListPage'), child: BooksListScreen.all(), name: 'BooksListScreen');
+      return MaterialPage(
+          key: const ValueKey('BooksListPage'),
+          child: BooksListScreen.all(),
+          name: 'BooksListScreen');
     },
   );
-}
 ```
 
 Implementation BaseRouterDelegate for your configuration
@@ -56,15 +56,15 @@ class NavmeRouterDelegate extends BaseRouterDelegate {
   NavmeRouterDelegate()
       : super(
           // base route
-          initConfig: BooksListNavigate.routeConfig,
-          configs: [
+          initialRoute: BooksListNavigate.routeConfig,
+          routes: [
             // pages
             BookDetailsNavigate.routeConfig,
             BooksListNavigate.routeConfig,
             FadeNavigate.routeConfig,
             NestedNavigate.routeConfig,
-            UnknownNavigate.routeConfig,
           ],
+          onUnknownRoute: UnknownNavigate.routeConfig,
         );
 
   @override

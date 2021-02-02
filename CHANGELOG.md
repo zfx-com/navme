@@ -1,3 +1,8 @@
+## [0.9.4] - 02.02.2021
+
+- fix: back browser
+- fix: set new url with a few route (book?id=1)
+
 ## [0.9.3] - 01.02.2021
 
 - fix: setNewRoutePath

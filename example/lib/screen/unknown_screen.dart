@@ -4,7 +4,7 @@ import 'package:navme/navme.dart';
 class UnknownNavigate {
   static String path = 'unknown';
   static RouteConfig routeConfig = RouteConfig(
-    state: RouteState(uri: path.toUri()),
+    state: (Uri uri) => RouteState(uri: path.toUri()),
     isThisPage: (RouteState state) {
       return true;
     },

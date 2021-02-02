@@ -3,16 +3,16 @@ import 'package:navme/navme.dart';
 
 import 'index.dart';
 
-class BooksListNavigate {
+class HomeNavigate {
   // base path
-  static String path = 'book';
+  static String path = '/';
 
   // config for configurate Router
   static RouteConfig routeConfig = RouteConfig(
     state: (Uri uri) => RouteState(uri: path.toUri()),
     // condition for using this page
     isThisPage: (RouteState state) {
-      if (state?.firstPath == path) {
+      if (state?.location == path) {
         return true;
       }
       return false;
@@ -24,9 +24,9 @@ class BooksListNavigate {
     // get Page for Router
     page: ({RouteState state}) {
       return MaterialPage(
-          key: const ValueKey('BooksListPage'),
-          child: BooksListScreen.all(),
-          name: 'BooksListScreen');
+          key: const ValueKey('HomePage'),
+          child: HomeScreen(),
+          name: 'HomeScreen');
     },
   );
 }

@@ -16,19 +16,27 @@ import 'index.dart';
 /// [RouteInformationParser] to produce a configuration of type [RouteState].
 abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteState> {
-  /// initConfig - required initial [RouteConfig] for create Router initial page
-  /// configs - List of [RouteConfig] all pages in your Navigator
-  BaseRouterDelegate({@required this.initConfig, @required this.configs})
-      : navigatorKey = GlobalKey<NavigatorState>(),
-        currentState = initConfig.state;
+  /// initialRoute-required initial [RouteConfig] for create Router initial page
+  /// routes - List of [RouteConfig] all pages in your Navigator
+  /// onUnknownRoute-required [RouteConfig] for create Router Unknown page
+  BaseRouterDelegate({
+    @required this.initialRoute,
+    @required this.routes,
+    @required this.onUnknownRoute,
+  })  : navigatorKey = GlobalKey<NavigatorState>(),
+        currentState = initialRoute.state(null);
 
   /// List of [RouteConfig] all pages in your Navigator
-  final List<RouteConfig> configs;
+  final List<RouteConfig> routes;
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
   /// required initial [RouteConfig] for create Router initial page
-  final RouteConfig initConfig;
+  final RouteConfig initialRoute;
+
+  /// required [RouteConfig] for create Router Unknown page
+
+  final RouteConfig onUnknownRoute;
 
   /// history states
   List<RouteState> previousState = [];
@@ -43,30 +51,51 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
   /// use careful, update variable when will get
   /// Update pages and state in back
-  RouteState get backState {
-    var value = initConfig.state;
+  RouteState backState({bool removeLast = false}) {
+    var value = initialRoute.state(null);
     if (pages.isNotEmpty) {
-      pages.removeLast();
+      if (pages.length > 1 || removeLast) {
+        pages.removeLast();
+      }
     }
-    if (previousState.isNotEmpty && pages.length == previousState.length) {
-      value = previousState.last;
+    if (previousState.length > 1 || removeLast) {
       previousState.removeLast();
+    }
+    if (previousState.isNotEmpty) {
+      value = previousState.last;
     }
     return value;
   }
 
   /// add new page in stack by new [RouteState]
   /// notif - use notifyListeners
-  void updatePage(RouteState newState, {bool notif = true}) {
-    for (final item in configs) {
+  /// addOne - return when added one page from routes config
+  /// fromLast - foreach config from last route
+  void updatePage(RouteState newState,
+      {bool notif = true, bool addOne = false, bool fromLast = false}) {
+    var findedPage = false;
+    final configs = [initialRoute, ...routes];
+    final routesList = fromLast ? configs : configs.reversed.toList();
+    for (final item in routesList) {
       final isThisPage = item.isThisPage(newState);
       if (isThisPage) {
+        previousState.add(item.state(newState.uri));
+        currentState = RouteState(uri: newState.uri);
         pages.add(item.page(state: newState));
+        findedPage = true;
+
         if (notif == true) {
           notifyListeners();
         }
-        return;
+        if (addOne == true) {
+          return;
+        }
       }
+    }
+    if (findedPage == false) {
+      previousState.add(currentState);
+      currentState = RouteState(uri: newState.uri);
+      pages.add(onUnknownRoute.page());
     }
     if (notif == true) {
       notifyListeners();
@@ -77,14 +106,14 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   Future<void> setNewRoutePath(RouteState configuration) async {
     assert(configuration != null, 'configuration must be not null');
     // fix dublicate start page
-    if (_init == false && initConfig.isThisPage(configuration)) {
+    if (_init == false && initialRoute.isThisPage(configuration)) {
       _init = true;
       return;
     }
+    pages?.clear();
+    previousState.clear();
 
-    // update state
-    currentState = configuration;
-    replace(currentState.uri);
+    updatePage(configuration);
   }
 
   /// return List [Page] for render stack pages in Navigator 2.0
@@ -92,7 +121,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   List<Page<dynamic>> buildPage() {
     if (pages == null || pages.isEmpty) {
       pages = [];
-      pages.add(initConfig.page(state: initConfig.state));
+      pages.add(initialRoute.page(state: initialRoute.state(null)));
       return pages;
     }
 
@@ -112,14 +141,13 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
   /// Add new page in stack pages
   void push(Uri uri) {
-    previousState.add(currentState);
-    currentState = RouteState(uri: uri);
-    updatePage(currentState);
+    updatePage(RouteState(uri: uri), addOne: true, fromLast: true);
   }
 
   /// remove last page in stack pages
-  void pop() {
-    currentState = backState;
+  /// removeLast-if stack have one page remove this page and build initial page
+  void pop({bool removeLast = false}) {
+    currentState = backState(removeLast: removeLast);
     notifyListeners();
   }
 
@@ -127,8 +155,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   void replace(Uri uri) {
     pages.clear();
     previousState.clear();
-    currentState = RouteState(uri: uri);
-    updatePage(currentState);
+    updatePage(currentState, addOne: true, fromLast: true);
   }
 
   /// use notifyListeners

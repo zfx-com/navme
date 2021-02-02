@@ -5,20 +5,22 @@ import 'package:navme/navme.dart';
 import '../screen/book_details/index.dart';
 import '../screen/books_list/index.dart';
 import '../screen/fade/index.dart';
+import '../screen/home/index.dart';
 import '../screen/nested/index.dart';
 import '../screen/unknown_screen.dart';
 
 class NavmeRouterDelegate extends BaseRouterDelegate {
   NavmeRouterDelegate()
       : super(
-          initConfig: BooksListNavigate.routeConfig,
-          configs: [
+          initialRoute: HomeNavigate.routeConfig,
+          routes: [
+            HomeNavigate.routeConfig,
             BookDetailsNavigate.routeConfig,
             BooksListNavigate.routeConfig,
             FadeNavigate.routeConfig,
             NestedNavigate.routeConfig,
-            UnknownNavigate.routeConfig,
           ],
+          onUnknownRoute: UnknownNavigate.routeConfig,
         );
 
   @override

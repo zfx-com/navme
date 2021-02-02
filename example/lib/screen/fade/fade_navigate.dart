@@ -8,7 +8,7 @@ import 'index.dart';
 class FadeNavigate {
   static String path = 'fade';
   static RouteConfig routeConfig = RouteConfig(
-    state: RouteState(uri: path.toUri()),
+    state: (Uri uri) => RouteState(uri: path.toUri()),
     isThisPage: (RouteState state) {
       if (state?.firstPath == path) {
         return true;

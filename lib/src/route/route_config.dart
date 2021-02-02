@@ -14,8 +14,9 @@ class RouteConfig {
     @required this.settings,
   });
 
-  /// base state for using in initial config
-  final RouteState state;
+  /// clean uri to page [RouteState]
+  /// using for calculate previos state when set any uri from browser
+  final RouteState Function(Uri uri) state;
 
   /// condition for use this page in navigator action
   final bool Function(RouteState state) isThisPage;
@@ -29,7 +30,7 @@ class RouteConfig {
 
   /// update state
   RouteConfig copyWith(
-      {RouteState state,
+      {RouteState Function(Uri uri) state,
       bool Function(RouteState state) isThisPage,
       Map<String, String> Function(RouteState state) settings,
       Page Function({RouteState state}) page}) {

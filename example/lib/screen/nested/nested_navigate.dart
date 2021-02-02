@@ -5,11 +5,9 @@ import 'index.dart';
 class NestedNavigate {
   static String path = 'nested';
   static RouteConfig routeConfig = RouteConfig(
-    state: RouteState(uri: path.toUri()),
+    state: (Uri uri) => RouteState(uri: path.toUri()),
     isThisPage: (RouteState state) {
-      if ((state?.firstPath == path ||
-              state?.uri?.pathSegments?.isEmpty == true) &&
-          !state.hasParams) {
+      if (state?.firstPath == path) {
         return true;
       }
       return false;

@@ -8,7 +8,8 @@ import 'index.dart';
 class BookDetailsNavigate {
   static String path = 'book';
   static RouteConfig routeConfig = RouteConfig(
-    state: RouteState(uri: path.toUri()),
+    state: (Uri uri) =>
+        RouteState(uri: '$path?${settings(RouteState(uri: uri))}'.toUri()),
     isThisPage: (RouteState state) {
       if (state?.firstPath == path && settings(state) != null) {
         return true;
