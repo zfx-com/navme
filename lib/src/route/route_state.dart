@@ -53,6 +53,7 @@ class RouteState {
   @override
   int get hashCode => uri.hashCode;
 
+  /// remove nestedPrefixPath from uri
   RouteState diff(String nestedPrefixPath) {
     if (nestedPrefixPath == null ||
         nestedPrefixPath == '' ||

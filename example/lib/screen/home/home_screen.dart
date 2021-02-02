@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:navme/helpers.dart';
 import 'package:navme/navme.dart';
 
-import '../../navigation/index.dart';
 import '../books_list/index.dart';
 import '../fade/index.dart';
 import '../nested/index.dart';
