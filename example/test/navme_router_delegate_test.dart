@@ -29,6 +29,18 @@ void main() {
     expect(navmeRouterDelegate.currentState.uri.toString() == '/', true);
   });
 
+  test('book detail replace', () async {
+    final navmeRouterDelegate = NavmeRouterDelegate.main();
+    // ignore: cascade_invocations
+    navmeRouterDelegate.buildPage();
+    await navmeRouterDelegate
+        .setNewRoutePath(RouteState(uri: 'book?id=1'.toUri()));
+    expect(navmeRouterDelegate.pages.length == 2, true);
+    navmeRouterDelegate.replace('fade'.toUri());
+    expect(navmeRouterDelegate.pages.length == 1, true);
+    expect(navmeRouterDelegate.currentState.uri.toString() == 'fade', true);
+  });
+
   test('nested', () async {
     final navmeRouterDelegate = NavmeRouterDelegate.main();
     final pages = navmeRouterDelegate.buildPage();

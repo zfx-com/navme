@@ -208,6 +208,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   void replace(Uri uri) {
     pages.clear();
     previousState.clear();
+    currentState = RouteState(uri: uri);
     updatePage(currentState, addOne: true, fromLast: true);
   }
 

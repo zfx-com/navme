@@ -1,3 +1,6 @@
+## [0.9.6] - 09.03.2021
+
+- fix: replace
 ## [0.9.5] - 03.02.2021
 
 - fix: nested navigator
