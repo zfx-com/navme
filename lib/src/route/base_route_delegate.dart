@@ -150,6 +150,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     // fix dublicate start page
     if (_init == false && initialRoute.isThisPage(configuration)) {
       _init = true;
+      previousState.add(initialRoute.state(configuration.uri));
       return;
     }
     pages?.clear();
