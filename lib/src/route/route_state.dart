@@ -7,10 +7,17 @@ import '../helpers/index.dart';
 /// Router state for navme router delegate basede on Uri
 class RouteState {
   /// create state from Uri, state based on web navigation model
-  RouteState({@required this.uri});
+  RouteState({@required this.uri, this.uriState, this.innerState});
 
   /// current Uri
   final Uri uri;
+
+  /// an uri app state so that the app can have different states
+  /// even in the same uri, must be serializable
+  final Object uriState;
+
+  /// an inner app state so that web browser cannot restore the state
+  final Object innerState;
 
   /// uri => string
   String get location {
@@ -26,7 +33,7 @@ class RouteState {
       uri.queryParameters != null && uri.queryParameters.isNotEmpty;
 
   @override
-  String toString() => 'RouteState(uri: ${uri?.toString()})';
+  String toString() => 'RouteState(uri: ${uri?.toString()} state: $uriState)';
 
   @override
   bool operator ==(Object other) {
@@ -34,7 +41,9 @@ class RouteState {
       return true;
     }
 
-    return other is RouteState && other.uri == uri;
+    return other is RouteState &&
+        other.uri == uri &&
+        other.uriState == uriState;
   }
 
   /// safe gettter for queryParameters

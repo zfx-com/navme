@@ -8,6 +8,10 @@ import 'index.dart';
 
 class BookDetailsNavigate {
   static String path = 'book';
+
+  static const String behaviorKey = 'behavior_key';
+  static const String innerMessageKey = 'inner_message_key';
+
   static RouteConfig routeConfig = RouteConfig(
     state: (Uri uri) =>
         RouteState(uri: '$path?${settings(RouteState(uri: uri))}'.toUri()),
@@ -46,9 +50,33 @@ class BookDetailsNavigate {
           ? BooksListScreen.allBooks[id]
           : null;
     }
+    String innerMessage;
+    void Function() behavior;
+    final uriMap = state.uriState;
+    if (uriMap is Map<String, dynamic>) {
+      if (uriMap.containsKey(innerMessageKey)) {
+        final staff = uriMap[innerMessageKey];
+        if (staff is String) {
+          innerMessage = staff;
+        }
+      }
+    }
+    final innerMap = state.innerState;
+    if (innerMap is Map<String, dynamic>) {
+      if (innerMap.containsKey(behaviorKey)) {
+        final staff = innerMap[behaviorKey];
+        if (staff is void Function()) {
+          behavior = staff;
+        }
+      }
+    }
     return MaterialPage(
       key: ValueKey('BookDetailsPageId$id'),
-      child: BookDetailsScreen(book: book),
+      child: BookDetailsScreen(
+        book: book,
+        innerMessage: innerMessage,
+        behavior: behavior,
+      ),
       arguments: settings,
       name: 'BookDetailsScreen',
     );

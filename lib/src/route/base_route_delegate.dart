@@ -120,8 +120,16 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
       final isThisPage = item.isThisPage(newStateWithoutPrefix);
       if (isThisPage) {
         l.log('add page ${item.state(newState?.uri)}', name: debugLabel);
-        previousState.add(item.state(newState.uri));
-        currentState = RouteState(uri: newState.uri);
+        previousState.add(RouteState(
+          uri: item.state(newState.uri)?.uri,
+          uriState: newState.uriState,
+          innerState: newState.innerState,
+        ));
+        currentState = RouteState(
+          uri: newState.uri,
+          uriState: newState.uriState,
+          innerState: newState.innerState,
+        );
         pages.add(item.page(state: newState));
         findedPage = true;
 
@@ -135,7 +143,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     }
     if (findedPage == false) {
       previousState.add(currentState);
-      currentState = RouteState(uri: newState.uri);
+      currentState = RouteState(uri: newState.uri, uriState: newState.uriState);
       pages.add(onUnknownRoute.page());
     }
     if (notif == true) {
@@ -150,7 +158,9 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     // fix dublicate start page
     if (_init == false && initialRoute.isThisPage(configuration)) {
       _init = true;
-      previousState.add(initialRoute.state(configuration.uri));
+      previousState.add(RouteState(
+          uri: initialRoute.state(configuration.uri)?.uri,
+          uriState: configuration.uriState));
       return;
     }
     pages?.clear();
@@ -188,14 +198,21 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   }
 
   /// Add new page in stack pages with nestedprefix
-  void pushNested(Uri uri) {
-    updatePage(RouteState(uri: '${nestedPrefixPath ?? ''}/$uri'.toUri()),
-        addOne: true, fromLast: true);
+  void pushNested(Uri uri, {Object uriState, Object innerState}) {
+    updatePage(
+        RouteState(
+          uri: '${nestedPrefixPath ?? ''}/$uri'.toUri(),
+          uriState: uriState,
+          innerState: innerState,
+        ),
+        addOne: true,
+        fromLast: true);
   }
 
   /// Add new page in stack pages
-  void push(Uri uri) {
-    updatePage(RouteState(uri: uri), addOne: true, fromLast: true);
+  void push(Uri uri, {Object uriState, Object innerState}) {
+    updatePage(RouteState(uri: uri, uriState: uriState, innerState: innerState),
+        addOne: true, fromLast: true);
   }
 
   /// remove last page in stack pages
@@ -206,10 +223,11 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   }
 
   /// remove all current stack pages and add one new page in stack
-  void replace(Uri uri) {
+  void replace(Uri uri, {Object uriState, Object innerState}) {
     pages.clear();
     previousState.clear();
-    currentState = RouteState(uri: uri);
+    currentState =
+        RouteState(uri: uri, uriState: uriState, innerState: innerState);
     updatePage(currentState, addOne: true, fromLast: true);
   }
 
