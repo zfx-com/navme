@@ -10,13 +10,19 @@ class StateRouteInformationParser extends RouteInformationParser<RouteState> {
       RouteInformation routeInformation) async {
     l.log('parseRouteInformation =  ${routeInformation.location}',
         name: 'StateRouteInformationParser');
-    return RouteState(uri: routeInformation.location?.toUri());
+    return RouteState(
+      uri: routeInformation.location?.toUri(),
+      uriState: routeInformation.state,
+    );
   }
 
   @override
   RouteInformation restoreRouteInformation(RouteState configuration) {
     l.log('restoreRouteInformation =  $configuration',
         name: 'StateRouteInformationParser');
-    return RouteInformation(location: configuration.location);
+    return RouteInformation(
+      location: configuration.location,
+      state: configuration.uriState,
+    );
   }
 }

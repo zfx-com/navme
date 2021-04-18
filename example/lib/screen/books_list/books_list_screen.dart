@@ -39,8 +39,18 @@ class BooksListScreen extends StatelessWidget {
                     title: Text(book.title),
                     subtitle: Text(book.author),
                     onTap: () {
-                      BaseRouterDelegate.of(context)
-                          ?.push(BookDetailsNavigate.getUri(book));
+                      BaseRouterDelegate.of(context)?.push(
+                        BookDetailsNavigate.getUri(book),
+                        uriState: <String, dynamic>{
+                          BookDetailsNavigate.innerMessageKey:
+                              'custom inner message',
+                        },
+                        innerState: <String, dynamic>{
+                          BookDetailsNavigate.behaviorKey: () {
+                            return print('book - $book');
+                          },
+                        },
+                      );
                     }),
               ListTile(
                   title: const Text('Fade'),

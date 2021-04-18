@@ -5,10 +5,14 @@ import '../../model/index.dart';
 class BookDetailsScreen extends StatelessWidget {
   BookDetailsScreen({
     @required this.book,
+    this.behavior,
+    this.innerMessage,
     Key key,
   }) : super(key: key);
 
   final Book book;
+  final Function() behavior;
+  final String innerMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,12 @@ class BookDetailsScreen extends StatelessWidget {
               Text(book.author, style: Theme.of(context).textTheme.subtitle1),
             ],
             if (book == null) const Text('Book not found'),
+            if (innerMessage != null) Text('Inner message: $innerMessage'),
+            if (behavior != null)
+              OutlinedButton(
+                onPressed: behavior,
+                child: const Text('Some behavior'),
+              ),
           ],
         ),
       ),
