@@ -1,6 +1,11 @@
+## [0.9.7] - 18.04.2021
+
+- feat: added a restored uri state and an inner state
+
 ## [0.9.6] - 09.03.2021
 
 - fix: replace
+
 ## [0.9.5] - 03.02.2021
 
 - fix: nested navigator
