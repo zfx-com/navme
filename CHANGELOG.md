@@ -1,3 +1,7 @@
+## [0.9.8] - 28.05.2021
+
+- fix:save route state with debug build
+
 ## [0.9.7] - 18.04.2021
 
 - feat: added a restored uri state and an inner state

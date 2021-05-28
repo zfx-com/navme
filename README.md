@@ -10,7 +10,7 @@ live demo: https://zfx-com.github.io/navme/
 ## Import
 
 ```yaml
-navme: 0.9.7
+navme: 0.9.8
 ```
 
 ```dart
