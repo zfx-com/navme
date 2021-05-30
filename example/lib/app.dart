@@ -15,17 +15,11 @@ class _AppState extends State<App> {
   final StateRouteInformationParser _stateRouteInformation =
       StateRouteInformationParser();
 
-  PlatformRouteInformationProvider _routeInformationProvider;
-  PlatformRouteInformationProvider get routeInformationProvider =>
-      _routeInformationProvider ??= PlatformRouteInformationProvider(
-          initialRouteInformation: const RouteInformation(location: '/'));
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerDelegate: _routerDelegate,
       routeInformationParser: _stateRouteInformation,
-      routeInformationProvider: routeInformationProvider,
     );
   }
 }
