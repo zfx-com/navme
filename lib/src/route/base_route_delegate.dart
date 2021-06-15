@@ -224,7 +224,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
   /// remove all current stack pages and add one new page in stack
   void replace(Uri uri, {Object uriState, Object innerState}) {
-    pages.clear();
+    pages?.clear();
     previousState.clear();
     currentState =
         RouteState(uri: uri, uriState: uriState, innerState: innerState);
