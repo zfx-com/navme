@@ -22,7 +22,7 @@ class RouteConfig {
   final bool Function(RouteState state) isThisPage;
 
   /// get setting from state(url)
-  final Map<String, String> Function(RouteState state) settings;
+  final Map<String, String?>? Function(RouteState state) settings;
 
   /// function for create a page from settings, widget,
   /// and set animation transaction

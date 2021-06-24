@@ -4,15 +4,15 @@ import '../../model/index.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   BookDetailsScreen({
-    @required this.book,
+    required this.book,
     this.behavior,
     this.innerMessage,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
-  final Book book;
-  final Function() behavior;
-  final String innerMessage;
+  final Book? book;
+  final Function()? behavior;
+  final String? innerMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class BookDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (book != null) ...[
-              Text(book.title, style: Theme.of(context).textTheme.headline6),
-              Text(book.author, style: Theme.of(context).textTheme.subtitle1),
+              Text(book!.title, style: Theme.of(context).textTheme.headline6),
+              Text(book!.author, style: Theme.of(context).textTheme.subtitle1),
             ],
             if (book == null) const Text('Book not found'),
             if (innerMessage != null) Text('Inner message: $innerMessage'),

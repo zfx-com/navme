@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:navme/navme.dart';
 import 'package:navme/helpers.dart';
+import 'package:navme/navme.dart';
 
 import '../../model/index.dart';
 import '../books_list/index.dart';
@@ -13,10 +13,10 @@ class BookDetailsNavigate {
   static const String innerMessageKey = 'inner_message_key';
 
   static RouteConfig routeConfig = RouteConfig(
-    state: (Uri uri) =>
+    state: (Uri? uri) =>
         RouteState(uri: '$path?${settings(RouteState(uri: uri))}'.toUri()),
     isThisPage: (RouteState state) {
-      if (state?.firstPath == path && settings(state) != null) {
+      if (state.firstPath == path && settings(state) != null) {
         return true;
       }
       return false;
@@ -25,33 +25,35 @@ class BookDetailsNavigate {
     page: page,
   );
 
-  static Map<String, String> settings(RouteState state) {
-    if (state == null) {
-      return null;
-    }
+  static Map<String, String?>? settings(RouteState state) {
     // book/1
-    var id = state.uri?.pathSegments?.length == 2
-        ? state.uri?.pathSegments[1]
-        : null;
+    var id =
+        state.uri?.pathSegments.length == 2 ? state.uri?.pathSegments[1] : null;
     // book?id=1
     id ??= state.getQueryValue('id');
+    // ignore: unnecessary_null_comparison
     if (id == null) {
       return null;
     }
     return {'id': id};
   }
 
-  static MaterialPage page({RouteState state}) {
-    final settings = routeConfig.settings(state);
-    final id = int.tryParse(settings['id']?.toString());
-    Book book;
-    if (id != null) {
-      book = BooksListScreen.allBooks.length > id
-          ? BooksListScreen.allBooks[id]
-          : null;
+  static MaterialPage page({RouteState? state}) {
+    final settings = routeConfig.settings(state!);
+    Book? book;
+    int? id;
+    if (settings != null) {
+      id = settings['id']?.toString() == null
+          ? null
+          : int.tryParse(settings['id'].toString());
+      if (id != null) {
+        book = BooksListScreen.allBooks.length > id
+            ? BooksListScreen.allBooks[id]
+            : null;
+      }
     }
-    String innerMessage;
-    void Function() behavior;
+    String? innerMessage;
+    void Function()? behavior;
     final uriMap = state.uriState;
     if (uriMap is Map<String, dynamic>) {
       if (uriMap.containsKey(innerMessageKey)) {
@@ -82,7 +84,7 @@ class BookDetailsNavigate {
     );
   }
 
-  static Uri getUri(Book book) {
+  static Uri? getUri(Book book) {
     final index = BooksListScreen.allBooks.indexOf(book);
     return 'book?id=$index'.toUri();
   }

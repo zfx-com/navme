@@ -10,10 +10,10 @@ class BooksListNavigate {
 
   // config for configurate Router
   static RouteConfig routeConfig = RouteConfig(
-    state: (Uri uri) => RouteState(uri: path.toUri()),
+    state: (Uri? uri) => RouteState(uri: path.toUri()),
     // condition for using this page
     isThisPage: (RouteState state) {
-      if (state?.firstPath == path) {
+      if (state.firstPath == path) {
         return true;
       }
       return false;
@@ -23,7 +23,7 @@ class BooksListNavigate {
       return null;
     },
     // get Page for Router
-    page: ({RouteState state}) {
+    page: ({RouteState? state}) {
       return MaterialPage(
           key: const ValueKey('BooksListPage'),
           child: BooksListScreen.all(),

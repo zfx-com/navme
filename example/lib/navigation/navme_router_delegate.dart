@@ -11,11 +11,11 @@ import '../screen/unknown_screen.dart';
 
 class NavmeRouterDelegate extends BaseRouterDelegate {
   NavmeRouterDelegate(
-      {@required RouteConfig initialRoute,
-      @required List<RouteConfig> routes,
-      @required RouteConfig onUnknownRoute,
-      String nestedPrefixPath,
-      String debugLabel})
+      {required RouteConfig initialRoute,
+      required List<RouteConfig> routes,
+      required RouteConfig onUnknownRoute,
+      String? nestedPrefixPath,
+      String? debugLabel})
       : super(
           initialRoute: initialRoute,
           routes: routes,

@@ -5,14 +5,14 @@ import 'package:navme/helpers.dart';
 class UnknownNavigate {
   static String path = 'unknown';
   static RouteConfig routeConfig = RouteConfig(
-    state: (Uri uri) => RouteState(uri: path.toUri()),
+    state: (Uri? uri) => RouteState(uri: path.toUri()),
     isThisPage: (RouteState state) {
       return true;
     },
     settings: (RouteState state) {
       return null;
     },
-    page: ({RouteState state}) {
+    page: ({RouteState? state}) {
       return MaterialPage(
         key: const ValueKey('UnknownPage'),
         child: UnknownScreen(),
@@ -23,7 +23,7 @@ class UnknownNavigate {
 }
 
 class UnknownScreen extends StatelessWidget {
-  UnknownScreen({Key key}) : super(key: key);
+  UnknownScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

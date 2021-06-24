@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FadeScreen extends StatelessWidget {
-  FadeScreen({Key key}) : super(key: key);
+  FadeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

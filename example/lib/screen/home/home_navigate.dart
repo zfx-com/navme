@@ -11,10 +11,10 @@ class HomeNavigate {
 
   // config for configurate Router
   static RouteConfig routeConfig = RouteConfig(
-    state: (Uri uri) => RouteState(uri: path.toUri()),
+    state: (Uri? uri) => RouteState(uri: path.toUri()),
     // condition for using this page
     isThisPage: (RouteState state) {
-      if (state?.location == path) {
+      if (state.location == path) {
         return true;
       }
       return false;
@@ -24,7 +24,7 @@ class HomeNavigate {
       return null;
     },
     // get Page for Router
-    page: ({RouteState state}) {
+    page: ({RouteState? state}) {
       return MaterialPage(
           key: const ValueKey('HomePage'),
           child: HomeScreen(),
@@ -33,10 +33,10 @@ class HomeNavigate {
   );
 
   static RouteConfig nestedRouteConfig = RouteConfig(
-    state: (Uri uri) => RouteState(uri: NestedNavigate.path.toUri()),
+    state: (Uri? uri) => RouteState(uri: NestedNavigate.path.toUri()),
     // condition for using this page
     isThisPage: (RouteState state) {
-      if (state?.location == path || state?.location == '') {
+      if (state.location == path || state.location == '') {
         return true;
       }
       return false;
@@ -46,7 +46,7 @@ class HomeNavigate {
       return null;
     },
     // get Page for Router
-    page: ({RouteState state}) {
+    page: ({RouteState? state}) {
       return MaterialPage(
         key: UniqueKey(),
         child: HomeScreen(),

@@ -171,13 +171,13 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
   /// return List [Page] for render stack pages in Navigator 2.0
   /// always return a new instance of List to build new render
-  List<Page<dynamic>>? buildPage() {
+  List<Page<dynamic>> buildPage() {
     l.log('buildPage', name: debugLabel);
     if (pages == null || pages!.isEmpty) {
       l.log('buildPage: init', name: debugLabel);
       pages = [];
       pages!.add(initialRoute.page(state: initialRoute.state(null)));
-      return pages;
+      return pages!;
     }
 
     // check key of pages

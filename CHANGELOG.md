@@ -1,3 +1,8 @@
+## [1.0.1] - 24.06.2021
+
+- fix: settings nullable
+- feat: example to dart 2.12
+
 ## [1.0.0] - 24.06.2021
 
 - feat: move to dart 2.12
@@ -5,6 +10,7 @@
 ## [0.9.9] - 15.06.2021
 
 - fix: replace pages is null
+
 ## [0.9.8] - 28.05.2021
 
 - fix:save route state with debug build

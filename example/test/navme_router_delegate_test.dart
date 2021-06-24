@@ -19,12 +19,12 @@ void main() {
     expect(pages.length == 1, true);
     await navmeRouterDelegate
         .setNewRoutePath(RouteState(uri: 'book?id=1'.toUri()));
-    expect(navmeRouterDelegate.pages.length == 2, true);
+    expect(navmeRouterDelegate.pages!.length == 2, true);
     navmeRouterDelegate.pop();
-    expect(navmeRouterDelegate.pages.length == 1, true);
+    expect(navmeRouterDelegate.pages!.length == 1, true);
     expect(navmeRouterDelegate.currentState.uri.toString() == 'book', true);
     navmeRouterDelegate.pop(removeLast: true);
-    expect(navmeRouterDelegate.pages.isEmpty, true);
+    expect(navmeRouterDelegate.pages!.isEmpty, true);
     pages = navmeRouterDelegate.buildPage();
     expect(navmeRouterDelegate.currentState.uri.toString() == '/', true);
   });
@@ -35,9 +35,9 @@ void main() {
     navmeRouterDelegate.buildPage();
     await navmeRouterDelegate
         .setNewRoutePath(RouteState(uri: 'book?id=1'.toUri()));
-    expect(navmeRouterDelegate.pages.length == 2, true);
-    navmeRouterDelegate.replace('fade'.toUri());
-    expect(navmeRouterDelegate.pages.length == 1, true);
+    expect(navmeRouterDelegate.pages!.length == 2, true);
+    navmeRouterDelegate.replace('fade'.toUri()!);
+    expect(navmeRouterDelegate.pages!.length == 1, true);
     expect(navmeRouterDelegate.currentState.uri.toString() == 'fade', true);
   });
 
@@ -47,10 +47,10 @@ void main() {
     expect(pages.length == 1, true);
     await navmeRouterDelegate
         .setNewRoutePath(RouteState(uri: 'nested'.toUri()));
-    expect(navmeRouterDelegate.pages.length == 1, true,
+    expect(navmeRouterDelegate.pages!.length == 1, true,
         reason: navmeRouterDelegate.pages.toString());
     navmeRouterDelegate.pop();
-    expect(navmeRouterDelegate.pages.length == 1, true,
+    expect(navmeRouterDelegate.pages!.length == 1, true,
         reason: navmeRouterDelegate.pages.toString());
     expect(navmeRouterDelegate.currentState.uri.toString() == 'nested', true,
         reason: navmeRouterDelegate.currentState.uri.toString());

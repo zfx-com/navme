@@ -8,7 +8,7 @@ import '../fade/index.dart';
 import '../nested/index.dart';
 
 class BooksListScreen extends StatelessWidget {
-  BooksListScreen({@required this.books, Key key}) : super(key: key);
+  BooksListScreen({required this.books, Key? key}) : super(key: key);
 
   factory BooksListScreen.all() => BooksListScreen(
         books: allBooks,
@@ -40,7 +40,7 @@ class BooksListScreen extends StatelessWidget {
                     subtitle: Text(book.author),
                     onTap: () {
                       BaseRouterDelegate.of(context)?.push(
-                        BookDetailsNavigate.getUri(book),
+                        BookDetailsNavigate.getUri(book)!,
                         uriState: <String, dynamic>{
                           BookDetailsNavigate.innerMessageKey:
                               'custom inner message',
@@ -56,13 +56,13 @@ class BooksListScreen extends StatelessWidget {
                   title: const Text('Fade'),
                   onTap: () {
                     BaseRouterDelegate.of(context)
-                        ?.push(FadeNavigate.path.toUri());
+                        ?.push(FadeNavigate.path.toUri()!);
                   }),
               ListTile(
                   title: const Text('Nested'),
                   onTap: () {
                     BaseRouterDelegate.of(context)
-                        ?.push(NestedNavigate.path.toUri());
+                        ?.push(NestedNavigate.path.toUri()!);
                   }),
             ],
           ),

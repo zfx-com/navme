@@ -4,7 +4,7 @@ import 'package:navme/navme.dart';
 import 'navigation/index.dart';
 
 class App extends StatefulWidget {
-  App({Key key}) : super(key: key);
+  App({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AppState();
