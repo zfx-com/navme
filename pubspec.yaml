@@ -1,13 +1,13 @@
 name: navme
 description: A simple way to use Navigation 2.0 like Navigator 1.0 and simple config for each page
-version: 0.9.9
+version: 1.0.0
 homepage: https://github.com/zfx-com
 repository: https://github.com/zfx-com/navme/tree/master
 issue_tracker: https://github.com/zfx-com/navme/issues
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:

@@ -15,7 +15,7 @@ linter:
     # - prefer_int_literals
     # - prefer_const_constructors_in_immutables
     # - close_sinks
-    - avoid_as
+    # - avoid_as
     # Package
     - lines_longer_than_80_chars
     - public_member_api_docs

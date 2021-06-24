@@ -7,17 +7,17 @@ import '../helpers/index.dart';
 /// Router state for navme router delegate basede on Uri
 class RouteState {
   /// create state from Uri, state based on web navigation model
-  RouteState({@required this.uri, this.uriState, this.innerState});
+  RouteState({required this.uri, this.uriState, this.innerState});
 
   /// current Uri
-  final Uri uri;
+  final Uri? uri;
 
   /// an uri app state so that the app can have different states
   /// even in the same uri, must be serializable
-  final Object uriState;
+  final Object? uriState;
 
   /// an inner app state so that web browser cannot restore the state
-  final Object innerState;
+  final Object? innerState;
 
   /// uri => string
   String get location {
@@ -25,12 +25,12 @@ class RouteState {
   }
 
   /// helper for condition with first path
-  String get firstPath => uri?.pathSegments?.firstOrDefault;
+  String? get firstPath => uri?.pathSegments.firstOrDefault;
 
   /// has queryParameters?
   bool get hasParams =>
       // (uri?.pathSegments != null && !uri.pathSegments.empty) ||
-      uri.queryParameters != null && uri.queryParameters.isNotEmpty;
+      uri!.queryParameters.isNotEmpty;
 
   @override
   String toString() => 'RouteState(uri: ${uri?.toString()} state: $uriState)';
@@ -47,13 +47,10 @@ class RouteState {
   }
 
   /// safe gettter for queryParameters
-  String getQueryValue(String key) {
-    if (uri.queryParameters == null) {
-      return null;
-    }
-    String result;
-    if (uri.queryParameters.containsKey(key)) {
-      result = uri.queryParameters[key];
+  String? getQueryValue(String key) {
+    String? result;
+    if (uri!.queryParameters.containsKey(key)) {
+      result = uri!.queryParameters[key];
       return result;
     }
     return null;
@@ -63,13 +60,13 @@ class RouteState {
   int get hashCode => uri.hashCode;
 
   /// remove nestedPrefixPath from uri
-  RouteState diff(String nestedPrefixPath) {
+  RouteState diff(String? nestedPrefixPath) {
     if (nestedPrefixPath == null ||
         nestedPrefixPath == '' ||
         nestedPrefixPath == '/') {
       return this;
     }
-    final uriStr = this?.uri?.toString();
+    final uriStr = uri?.toString() ?? '';
     if (uriStr.startsWith(nestedPrefixPath)) {
       return RouteState(uri: uriStr.substring(nestedPrefixPath.length).toUri());
     }

@@ -21,11 +21,11 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   /// routes - List of [RouteConfig] all pages in your Navigator
   /// onUnknownRoute-required [RouteConfig] for create Router Unknown page
   BaseRouterDelegate({
-    @required this.initialRoute,
-    @required this.routes,
-    @required this.onUnknownRoute,
+    required this.initialRoute,
+    required this.routes,
+    required this.onUnknownRoute,
     this.nestedPrefixPath,
-    String debugLabel,
+    String? debugLabel,
   })  : _debugLabel = debugLabel,
         navigatorKey = GlobalKey<NavigatorState>(),
         currentState = initialRoute.state(null);
@@ -39,9 +39,9 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   final RouteConfig initialRoute;
 
   /// prefix path for Nested Navigator
-  final String nestedPrefixPath;
+  final String? nestedPrefixPath;
 
-  final String _debugLabel;
+  final String? _debugLabel;
 
   /// name for debug
   String get debugLabel => _debugLabel ?? 'BaseRouterDelegate';
@@ -61,7 +61,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   RouteState currentState;
 
   /// Stack pages in this moment
-  List<Page<dynamic>> pages;
+  List<Page<dynamic>>? pages;
 
   bool _init = false;
 
@@ -70,9 +70,9 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   RouteState backState({bool removeLast = false}) {
     l.log('backState: removeLast =  $removeLast', name: debugLabel);
     var value = initialRoute.state(null);
-    if (pages.isNotEmpty) {
-      if (pages.length > 1 || removeLast) {
-        pages.removeLast();
+    if (pages!.isNotEmpty) {
+      if (pages!.length > 1 || removeLast) {
+        pages!.removeLast();
       }
     }
     if (previousState.length > 1 || removeLast) {
@@ -85,7 +85,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   }
 
   /// get instance routerDelegate from context
-  static BaseRouterDelegate of(BuildContext context) {
+  static BaseRouterDelegate? of(BuildContext context) {
     final delegate = Router.of(context).routerDelegate;
     if (delegate is BaseRouterDelegate) {
       return delegate;
@@ -119,9 +119,9 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
       l.log('newStateWithoutPrefix $newStateWithoutPrefix', name: debugLabel);
       final isThisPage = item.isThisPage(newStateWithoutPrefix);
       if (isThisPage) {
-        l.log('add page ${item.state(newState?.uri)}', name: debugLabel);
+        l.log('add page ${item.state(newState.uri)}', name: debugLabel);
         previousState.add(RouteState(
-          uri: item.state(newState.uri)?.uri,
+          uri: item.state(newState.uri).uri,
           uriState: newState.uriState,
           innerState: newState.innerState,
         ));
@@ -130,7 +130,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
           uriState: newState.uriState,
           innerState: newState.innerState,
         );
-        pages.add(item.page(state: newState));
+        pages!.add(item.page(state: newState));
         findedPage = true;
 
         if (notif == true) {
@@ -144,7 +144,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
     if (findedPage == false) {
       previousState.add(currentState);
       currentState = RouteState(uri: newState.uri, uriState: newState.uriState);
-      pages.add(onUnknownRoute.page());
+      pages!.add(onUnknownRoute.page());
     }
     if (notif == true) {
       notifyListeners();
@@ -154,12 +154,11 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   @override
   Future<void> setNewRoutePath(RouteState configuration) async {
     l.log('setNewRoutePath = $configuration', name: debugLabel);
-    assert(configuration != null, 'configuration must be not null');
     // fix dublicate start page
     if (_init == false && initialRoute.isThisPage(configuration)) {
       _init = true;
       previousState.add(RouteState(
-          uri: initialRoute.state(configuration.uri)?.uri,
+          uri: initialRoute.state(configuration.uri).uri,
           uriState: configuration.uriState));
       return;
     }
@@ -172,18 +171,18 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
   /// return List [Page] for render stack pages in Navigator 2.0
   /// always return a new instance of List to build new render
-  List<Page<dynamic>> buildPage() {
+  List<Page<dynamic>>? buildPage() {
     l.log('buildPage', name: debugLabel);
-    if (pages == null || pages.isEmpty) {
+    if (pages == null || pages!.isEmpty) {
       l.log('buildPage: init', name: debugLabel);
       pages = [];
-      pages.add(initialRoute.page(state: initialRoute.state(null)));
+      pages!.add(initialRoute.page(state: initialRoute.state(null)));
       return pages;
     }
 
     // check key of pages
     if (!kReleaseMode) {
-      final keys = pages.map((e) => e.key?.toString()).toList();
+      final keys = pages!.map((e) => e.key?.toString()).toList();
       final distinct = keys.toSet();
       if (distinct.length != keys.length) {
         distinct.forEach(keys.remove);
@@ -194,11 +193,11 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
 
     l.log('return buildPage: pages = $pages', name: debugLabel);
     // always return new object
-    return [...pages];
+    return [...pages!];
   }
 
   /// Add new page in stack pages with nestedprefix
-  void pushNested(Uri uri, {Object uriState, Object innerState}) {
+  void pushNested(Uri uri, {Object? uriState, Object? innerState}) {
     updatePage(
         RouteState(
           uri: '${nestedPrefixPath ?? ''}/$uri'.toUri(),
@@ -210,7 +209,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   }
 
   /// Add new page in stack pages
-  void push(Uri uri, {Object uriState, Object innerState}) {
+  void push(Uri uri, {Object? uriState, Object? innerState}) {
     updatePage(RouteState(uri: uri, uriState: uriState, innerState: innerState),
         addOne: true, fromLast: true);
   }
@@ -223,7 +222,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
   }
 
   /// remove all current stack pages and add one new page in stack
-  void replace(Uri uri, {Object uriState, Object innerState}) {
+  void replace(Uri uri, {Object? uriState, Object? innerState}) {
     pages?.clear();
     previousState.clear();
     currentState =

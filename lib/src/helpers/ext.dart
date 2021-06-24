@@ -1,19 +1,20 @@
 /// extension List
-extension Linq<T> on List<T> {
+extension Linq<T> on List<T?>? {
   /// default = null
-  T get firstOrDefault => isEmpty ? null : first;
+  T? get firstOrDefault =>
+      this == null ? null : (this!.isEmpty ? null : this!.first);
 
   /// null || isEmpty
-  bool get empty => this == null || isEmpty;
+  bool get empty => this == null || this!.isEmpty;
 }
 
 /// extension String
-extension XDartString on String {
+extension XDartString on String? {
   /// get Uri from string
-  Uri toUri() {
+  Uri? toUri() {
     if (this == null) {
       return null;
     }
-    return Uri.parse(this);
+    return Uri.parse(this!);
   }
 }
