@@ -6,8 +6,8 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:navme/navme.dart';
 import 'package:navme/helpers.dart';
+import 'package:navme/navme.dart';
 
 // ignore: avoid_relative_lib_imports
 import '../lib/navigation/index.dart';

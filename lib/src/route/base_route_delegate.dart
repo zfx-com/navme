@@ -112,7 +112,7 @@ abstract class BaseRouterDelegate extends RouterDelegate<RouteState>
         name: debugLabel);
     l.log('pages $pages', name: debugLabel);
     var findedPage = false;
-    final configs = [...routes, initialRoute];
+    final configs = {...routes, initialRoute}.toList();
     final routesList = fromLast ? configs : configs.reversed.toList();
     for (final item in routesList) {
       final newStateWithoutPrefix = newState.diff(nestedPrefixPath);
